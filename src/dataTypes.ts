@@ -2,8 +2,14 @@ export type FetchStatus = "idle" | "loading" | "error" | "success";
 
 export interface FetchResult<T> {
   fetchedData: T | null;
+  paginatedData: T[] | null;
   error: boolean;
   status: FetchStatus;
+  currentPage: number; 
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  handleNextPage: () => void;
+  handlePrevPage: () => void;
 }
 
 export interface PostList {
