@@ -1,0 +1,394 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: hsl(200, 20%, 95%);
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: hsl(200, 100%, 10%);
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  color: white;
+  /* width: 100%; */
+  height: 70px;
+}
+
+header .site-logos {
+  display: flex;
+  align-items: center;
+}
+
+header nav {
+  margin-right: 2.5em;
+}
+
+.site-logo {
+  width: 50px;
+  margin-right: 0.6em;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  margin: 0;
+  margin-bottom: 0.8em;
+}
+
+a {
+  font-weight: 500;
+  margin-right: 1em;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: aqua;
+}
+
+/* postcss */
+.posts-container,
+.todos-container,
+.users-container {
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  padding: 1em 2em;
+  /* width: 80%; */
+  margin: 0 auto;
+}
+
+.all-posts,
+.all_user-posts {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.all_user-posts {
+  max-width: 1200px;
+}
+
+/* .all-posts{
+  display: grid;
+  gap: 20px;
+  grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
+} */
+
+.users {
+  padding: 15px 25px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+
+/* .users {
+  display: grid;
+  gap: 10;
+  grid-template-columns: repeat(3, 300px);
+} */
+
+.user-card,
+.post-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  padding: 0.7em;
+}
+
+.user-card * {
+  width: 300px;
+}
+
+.users-btns {
+  margin-top: 1em;
+}
+
+.post-card {
+  width: 100%;
+  max-width: 350px;
+  flex-grow: 0;
+}
+
+.post-title,
+.view-btn {
+  margin: 0;
+}
+
+.post-title {
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.post-content,
+.user-content {
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  padding: 0.4em 0;
+  margin: 0.4em 0;
+}
+
+.user-name {
+  margin: 0.2em 0;
+}
+
+.user-content span {
+  display: block;
+}
+
+.finished {
+  color: "#213547";
+  text-decoration: line-through;
+}
+
+.view-btn {
+  align-self: flex-end;
+  border-radius: 0.5rem;
+  border: none;
+  text-decoration: none;
+  padding: 0.6em 1.2em;
+  margin: 0;
+  font-size: 1em;
+  font-family: inherit;
+  color: hsl(200, 20%, 95%);
+  background: hsl(200, 100%, 25%);
+  cursor: pointer;
+  width: 70px;
+}
+.view-btn:hover,
+.view-btn:focus {
+  background: hsl(200, 100%, 35%);
+}
+
+/* POSTVIEW CONTAINER */
+
+.post-view-container,
+.user-view-container {
+  background-color: #ccc;
+  min-height: 100vh;
+  padding: 2em;
+}
+
+.post-view-container .post-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+.post-comment {
+  max-width: 1200px;
+}
+
+/* .all_user-posts {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr 1fr;
+} */
+
+.author span {
+  margin-right: 5px;
+}
+
+.author a {
+  color: rgb(169, 64, 169);
+  text-decoration: underline;
+}
+
+.comment {
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 0.3em 0;
+}
+
+.comment-body {
+  margin: 0.2em 0;
+}
+
+.post-comment,
+.post-todos {
+  display: flex;
+  flex-direction: column;
+}
+
+/* .user-comments, .post-view-btns {
+  max-width: 1000px;
+} */
+.post-view-btns {
+  align-self: flex-end;
+  margin: 1em 0;
+}
+
+.post-todo-btns,
+.users-btns {
+  align-self: center;
+}
+
+.btn {
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: rgb(137, 66, 137);
+  color: white;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.btn-more {
+  margin-right: 1em;
+}
+
+/* USERVIEW CONTAINER */
+
+.username {
+  font-size: 2rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.address span,
+strong {
+  margin-right: 3px;
+}
+
+.address span,
+.user-address {
+  font-size: 0.9rem;
+}
+
+.user-address p {
+  margin: 0.2em 0;
+}
+
+strong {
+  font-size: 1rem;
+}
+
+.user-info {
+  margin-bottom: 2em;
+}
+
+.users-view-btns {
+  margin: 1em;
+}
+
+.user-view-container, .user_posts{
+  display: flex;
+  flex-direction: column;
+}
+
+.user-posts-btns{
+  width: 200px;
+  align-self: center;
+}
+
+/* SPINNER */
+.loading-spinner::after {
+  content: "";
+  position: fixed;
+  z-index: 999;
+  height: 100px;
+  width: 100px;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  border: 10px solid transparent;
+  border-bottom-color: hsl(200, 100%, 50%);
+  animation: spin 1.25s ease-in infinite;
+  mix-blend-mode: multiply;
+}
+
+.loading-spinner::before {
+  content: "";
+  position: fixed;
+  z-index: 999;
+  height: 100px;
+  width: 100px;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  border: 10px solid transparent;
+  border-top-color: hsl(200, 100%, 50%);
+  animation: spin 2s ease-in-out infinite;
+  mix-blend-mode: multiply;
+}
+
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.move-buttons {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 2em auto;
+}
+
+.prev-btn,
+.next-btn {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin: 0 1em;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.btn-span {
+  margin: 0 2px;
+}
+
+.move-button:hover,
+.move-button:focus {
+  background: hsl(200, 100%, 35%);
+  color: white;
+  transition: 0.25s ease-in-out all;
+}
+.disabled:hover {
+  background-color: transparent;
+}
+/* a:hover {
+  color: #535bf2;
+  color: #646cff; 
+} */
+
+/* button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+} */

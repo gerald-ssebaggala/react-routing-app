@@ -1,0 +1,79 @@
+import { useCallback, useEffect, useState } from "react";
+import { DataFetchResult, FetchStatus } from "../dataTypes";
+
+export function useDataFetch<T>(
+  urlRoute: string,
+  dataPerPage: number,
+  initialPage: number
+): DataFetchResult<T> {
+  const [fetchedData, setFetchedData] = useState<T | null>(null);
+  const [error, setError] = useState<boolean>(false);
+  const [status, setStatus] = useState<FetchStatus>("idle");
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [totalPosts, setTotalPosts] = useState(0); //Total number of posts
+
+  const fetchData = useCallback(async () => {
+    setStatus("loading");
+
+    const url = `https://jsonplaceholder.typicode.com/${urlRoute}?_page=${currentPage}&_limit=${dataPerPage}`;
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      const res = await fetch(url);
+
+      if (!res.ok) {
+        console.error("Network response wasn't okay.", res);
+        setError(true);
+        return;
+      }
+
+      const totalFetchedData = res.headers.get("X-Total-Count");
+
+      const data = await res.json();
+      setFetchedData(data);
+      setStatus("success");
+      setTotalPosts(totalFetchedData ? parseInt(totalFetchedData, 10) : 0);
+    } catch (err) {
+      console.error(err);
+      setError(true);
+    }
+  }, [urlRoute, currentPage, dataPerPage]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const totalPages = totalPosts > 0 ? Math.ceil(totalPosts / dataPerPage) : 0;
+
+  const hasNextPage = currentPage < totalPages;
+
+  const hasPrevPage = currentPage > 1;
+
+  const handleNextPage = () => {
+    if (hasNextPage) setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (hasPrevPage) setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  
+  //getting particular user, thier comments und posts
+  useEffect(()=>{
+
+  },[])
+
+
+  return {
+    fetchedData,
+    error,
+    status,
+    currentPage,
+    totalPosts,
+    handleNextPage,
+    handlePrevPage,
+    hasNextPage,
+    hasPrevPage,
+  };
+}
