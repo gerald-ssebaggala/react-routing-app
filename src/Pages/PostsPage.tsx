@@ -3,6 +3,7 @@ import { PostList } from "../dataTypes";
 import Post from "../components/Post";
 import Buttons from "../components/Buttons";
 import { useDataFetch } from "../Hooks/useDataFetch";
+import { useEffect, useState } from "react";
 
 export default function PostsPage() {
   // const {
@@ -23,7 +24,29 @@ export default function PostsPage() {
     hasPrevPage,
   } = useDataFetch<PostList[]>("posts", 6);
 
-  const postList = posts?.map((post) => (
+  const [allPosts, setAllPosts] = useState<PostList[]>([]);
+
+  useEffect(() => {
+    setAllPosts((perv) => {
+      const result: PostList[] = [];
+
+      perv.forEach((x) => {
+        if (!result.find((y) => x.id == y.id)) 
+          result.push(x);
+      });
+
+      if (posts) {
+        posts.forEach((x) => {
+          if (!result.find((y) => x.id == y.id)) 
+            result.push(x);
+        });
+      }
+
+      return result;
+    });
+  }, [posts]);
+
+  const postList = allPosts?.map((post) => (
     <Post key={post.id} id={post.id} title={post.title} body={post.body} />
   ));
   console.log(postList);
