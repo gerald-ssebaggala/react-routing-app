@@ -284,12 +284,13 @@ strong {
   margin: 1em;
 }
 
-.user-view-container, .user_posts{
+.user-view-container,
+.user_posts {
   display: flex;
   flex-direction: column;
 }
 
-.user-posts-btns{
+.user-posts-btns {
   width: 200px;
   align-self: center;
 }
@@ -333,17 +334,9 @@ strong {
   }
 }
 
-.move-buttons {
-  display: flex;
-  justify-content: space-between;
-  max-width: 800px;
-  margin: 2em auto;
-}
-
-.prev-btn,
-.next-btn {
-  display: flex;
-  align-items: center;
+.view-more-btn,
+.next-btn,
+.prev-btn {
   border-radius: 8px;
   border: 1px solid #ccc;
   margin: 0 1em;
@@ -355,19 +348,36 @@ strong {
   transition: border-color 0.25s;
 }
 
+.move-buttons {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 2em auto;
+}
+
+.prev-btn,
+.next-btn {
+  display: flex;
+  align-items: center;
+}
+
 .btn-span {
   margin: 0 2px;
 }
 
 .move-button:hover,
-.move-button:focus {
+.move-button:focus,
+.view-more-btn:hover,
+.view-more-btn:focus {
   background: hsl(200, 100%, 35%);
   color: white;
   transition: 0.25s ease-in-out all;
 }
+
 .disabled:hover {
   background-color: transparent;
 }
+
 /* a:hover {
   color: #535bf2;
   color: #646cff; 

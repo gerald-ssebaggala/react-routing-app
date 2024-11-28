@@ -1,26 +1,17 @@
 import Buttons from "../components/Buttons";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Todo from "../components/Todo";
-import { UserTodo } from "../dataTypes";
-import { useDataFetch } from "../Hooks/useDataFetch";
-
+import { useFetchTodos } from "../Hooks/useFetchTodos";
 
 export default function TodosPage() {
-  // const { paginatedData: todos, error, handleNextPage,
-  //   handlePrevPage,
-  //   hasNextPage,
-  //   hasPrevPage} = useFetchData<UserTodo>(
-  //   "https://jsonplaceholder.typicode.com/todos"
-  // );
-
   const {
-    fetchedData: todos,
+    todos,
     error,
     handleNextPage,
     handlePrevPage,
     hasNextPage,
     hasPrevPage,
-  } = useDataFetch<UserTodo[]>("todos", 10);
+  } = useFetchTodos(10);
 
   const todoList = todos?.map((todo) => (
     <Todo

@@ -1,52 +1,19 @@
 import LoadingSpinner from "../components/LoadingSpinner";
-import { PostList } from "../dataTypes";
 import Post from "../components/Post";
 import Buttons from "../components/Buttons";
-import { useDataFetch } from "../Hooks/useDataFetch";
-import { useEffect, useState } from "react";
+import { useFetchPosts } from "../Hooks/useFetchPosts";
 
 export default function PostsPage() {
-  // const {
-  //   paginatedData,
-  //   error,
-  //   handleNextPage,
-  //   handlePrevPage,
-  //   hasNextPage,
-  //   hasPrevPage,
-  // } = useFetchData<PostList>("https://jsonplaceholder.typicode.com/posts");
-
   const {
-    fetchedData: posts,
+    posts,
     error,
     handleNextPage,
     handlePrevPage,
     hasNextPage,
     hasPrevPage,
-  } = useDataFetch<PostList[]>("posts", 6);
+  } = useFetchPosts(6);
 
-  const [allPosts, setAllPosts] = useState<PostList[]>([]);
-
-  useEffect(() => {
-    setAllPosts((perv) => {
-      const result: PostList[] = [];
-
-      perv.forEach((x) => {
-        if (!result.find((y) => x.id == y.id)) 
-          result.push(x);
-      });
-
-      if (posts) {
-        posts.forEach((x) => {
-          if (!result.find((y) => x.id == y.id)) 
-            result.push(x);
-        });
-      }
-
-      return result;
-    });
-  }, [posts]);
-
-  const postList = allPosts?.map((post) => (
+  const postList = posts?.map((post) => (
     <Post key={post.id} id={post.id} title={post.title} body={post.body} />
   ));
   console.log(postList);
@@ -67,3 +34,29 @@ export default function PostsPage() {
     </div>
   );
 }
+
+/*
+
+  FOR JUST VIEW MORE POSTS ON PAGE SCROLL DOWN 
+
+
+  const [allPosts, setAllPosts] = useState<PostList[]>([]);
+
+  useEffect(() => {
+    setAllPosts((perv) => {
+      const result: PostList[] = [];
+
+      perv.forEach((x) => {
+        if (!result.find((y) => x.id == y.id)) result.push(x);
+      });
+
+      if (posts) {
+        posts.forEach((x) => {
+          if (!result.find((y) => x.id == y.id)) result.push(x);
+        });
+      }
+
+      return result;
+    });
+  }, [posts]);
+*/

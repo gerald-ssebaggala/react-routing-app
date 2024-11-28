@@ -1,24 +1,40 @@
-import Buttons from "../components/Buttons";
+import { useEffect, useState } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import User from "../components/User";
+import { useFetchUsers } from "../Hooks/useFetchUsers";
 import { UserList } from "../dataTypes";
-import { useDataFetch } from "../Hooks/useDataFetch";
 
 export default function UsersPage() {
-  // const { fetchedData: users, error } = useFetchData<UserList[]>(
-  //   "https://jsonplaceholder.typicode.com/users"
-  // );
-
   const {
-    fetchedData: users,
+    users,
     error,
     handleNextPage,
-    handlePrevPage,
     hasNextPage,
-    hasPrevPage,
-  } = useDataFetch<UserList[]>("users", 6);
+  } = useFetchUsers(6);
 
-  const usersList = users?.map((user) => (
+  const [allUsers, setAllUsers] = useState<UserList[]>([]);
+
+  useEffect(() => {
+    setAllUsers((prev) => {
+      const result: UserList[] = [];
+
+      prev.forEach((item) => {
+        if (!result.find((existingItem) => existingItem.id == item.id))
+          result.push(item);
+      });
+
+      if (users) {
+        users.forEach((user) => {
+          if (!result.find((existngUser) => existngUser.id == user.id))
+            result.push(user);
+        });
+      }
+
+      return result;
+    });
+  }, [users]);
+
+  const usersList = allUsers?.map((user) => (
     <User
       key={user.id}
       id={user.id}
@@ -35,14 +51,11 @@ export default function UsersPage() {
       {!error && !users && <LoadingSpinner />}
       {users && <div className="users">{usersList}</div>}
       {error && <div>Something is wrong</div>}
-      {users && <div className="users-btns">
-        <Buttons
-          onNext={handleNextPage}
-          onPrev={handlePrevPage}
-          hasNextPage={hasNextPage}
-          hasPrevPage={hasPrevPage}
-        />
-      </div>}
+      {users && (
+        <div className="users-btns">
+          <button onClick={handleNextPage} disabled={!hasNextPage} className="view-more-btn">View More Users</button>
+        </div>
+      )}
     </div>
   );
 }
