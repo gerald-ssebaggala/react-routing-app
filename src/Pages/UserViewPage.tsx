@@ -1,49 +1,28 @@
 import { useParams } from "react-router-dom";
-import { PostList, User, UserTodo } from "../dataTypes";
 import Post from "../components/Post";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Todo from "../components/Todo";
-import { useDataFetch } from "../Hooks/useDataFetch";
 import Buttons from "../components/Buttons";
-
+import { useFetchUser } from "../Hooks/useFetchUser";
+import { useFetchUserTodos } from "../Hooks/useFetchUserTodos";
+import { useFetchUserPosts } from "../Hooks/useFetchUserPosts";
 
 export default function UserViewPage() {
   const { userId } = useParams(); //extracting the userId from the route parameters
 
   const parseduserId = userId ? parseInt(userId, 10) : undefined;
 
-  // const { fetchedData: user, error } = useFetchData<User>(
-  //   `https://jsonplaceholder.typicode.com/users/${userId}`
-  // );
+  const { user, error } = useFetchUser(parseduserId);
 
-    // const { fetchedData: userTodos } = useFetchData<UserTodo[]>(
-  //   `https://jsonplaceholder.typicode.com/todos?userId=${userId}`
-  // );
-
-  const { fetchedData: user, error} = useDataFetch<User>(
-    "users",
-    undefined,
-    parseduserId
-  );
-
-  // const { fetchedData: userPosts } = useFetchData<PostList[]>(
-  //   `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
-  // );
-
-  const { fetchedData: userPosts, hasNextPage, hasPrevPage } = useDataFetch<PostList[]>(
-    "posts",
+  const { userPosts, hasNextPage, hasPrevPage } = useFetchUserPosts(
     6,
     parseduserId
   );
 
-
-
-  const {
-    fetchedData: userTodos,
-    handleNextPage,
-    handlePrevPage,
-
-  } = useDataFetch<UserTodo[]>("todos", 6, parseduserId);
+  const { userTodos, handleNextPage, handlePrevPage } = useFetchUserTodos(
+    6,
+    parseduserId
+  );
 
   const usertodoList = userTodos?.map((todo) => (
     <Todo key={todo.id} title={todo.title} completed={todo.completed} />

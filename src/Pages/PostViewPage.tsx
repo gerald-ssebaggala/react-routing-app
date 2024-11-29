@@ -1,11 +1,15 @@
 import { Link, useParams } from "react-router-dom";
 // import { useFetchData } from "../Hooks/useFetchData";
-import { Post, User, UserComment, UserTodo } from "../dataTypes";
+import { Post, UserComment } from "../dataTypes";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Todo from "../components/Todo";
 import Comment from "../components/Comment";
 import { useDataFetch } from "../Hooks/useDataFetch";
 import Buttons from "../components/Buttons";
+import { useFetchComments } from "../Hooks/useFetchComments";
+import { useEffect, useState } from "react";
+import { useFetchUser } from "../Hooks/useFetchUser";
+import { useFetchUserTodos } from "../Hooks/useFetchUserTodos";
 
 export default function PostViewPage() {
   const { postId } = useParams();
@@ -18,31 +22,41 @@ export default function PostViewPage() {
     parsedPostId
   );
 
-  const { fetchedData: user } = useDataFetch<User>(
-    "users",
-    undefined,
-    parsedPostId
-  );
+  const { user } = useFetchUser(parsedPostId);
 
-  const {
-    fetchedData: comments,
-    handleNextPage,
-    handlePrevPage,
-    hasNextPage,
-    hasPrevPage,
-  } = useDataFetch<UserComment[]>("comments", 3, parsedPostId);
+  const { userTodos } = useFetchUserTodos(5, parsedPostId);
 
-  const { fetchedData: todos } = useDataFetch<UserTodo[]>(
-    "todos",
-    6,
-    parsedPostId
-  );
+  console.log(userTodos)
 
-  const postCommentsList = comments?.map((comment) => (
+  const { comments, handleNextPage, hasNextPage, handlePrevPage, hasPrevPage } =
+    useFetchComments(3, parsedPostId);
+
+  const [allComments, setAllComments] = useState<UserComment[]>([]);
+
+  useEffect(() => {
+    setAllComments((prev) => {
+      const result: UserComment[] = [];
+
+      prev.forEach((item) => {
+        if (!result.find((x) => x.id == item.id)) result.push(item);
+      });
+
+      if (comments) {
+        comments.forEach((comment) => {
+          if (!result.find((x) => x.id == comment.id)) result.push(comment);
+        });
+      }
+
+      return result;
+    });
+  }, [comments]);
+
+
+  const postCommentsList = allComments?.map((comment) => (
     <Comment key={comment.id} email={comment.email} body={comment.body} />
   ));
 
-  const posttodosList = todos?.map((todo) => (
+  const posttodosList = userTodos?.map((todo) => (
     <Todo key={todo.id} title={todo.title} completed={todo.completed} />
   ));
 
@@ -68,17 +82,18 @@ export default function PostViewPage() {
           <h3 className="title">Comments</h3>
           <div className="user-comments">{postCommentsList}</div>
           <div className="post-view-btns">
-            <button onClick={handleNextPage} className="btn btn-more">
+            <button
+              onClick={handleNextPage}
+              className="btn view-more-btn"
+              disabled={!hasNextPage}
+            >
               More Comments
-            </button>
-            <button onClick={handlePrevPage} className="btn btn-back">
-              Back
             </button>
           </div>
         </div>
       )}
 
-      {todos && (
+      {userTodos && (
         <div className="post-todos">
           <h3 className="title">Todos</h3>
           <p className="todo">{posttodosList}</p>
